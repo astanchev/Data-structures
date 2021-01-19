@@ -18,7 +18,7 @@ namespace Problem03.ReversedList.Tests
 
             for (var i = 1; i <= count; i++)
             {
-                var randomNumber = this._random.Next();
+                var randomNumber = this._random.Next(10, 50);
 
                 list.Add(randomNumber);
                 Assert.AreEqual(i, list.Count);

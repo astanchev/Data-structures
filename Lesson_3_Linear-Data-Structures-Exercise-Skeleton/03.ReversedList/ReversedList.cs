@@ -7,8 +7,11 @@
     public class ReversedList<T> : IAbstractList<T>
     {
         private const int DefaultCapacity = 4;
+        private T[] items;
 
-        private T[] _items;
+        public int Capacity { get; private set; }
+        public int Count { get; private set; }
+        public bool IsReadOnly => false;
 
         public ReversedList()
             : this(DefaultCapacity) { }
@@ -16,63 +19,128 @@
         public ReversedList(int capacity)
         {
             if (capacity < 0)
+            {
                 throw new ArgumentOutOfRangeException(nameof(capacity));
+            }
 
-            this._items = new T[capacity];
+            this.Capacity = capacity;
+            this.items = new T[capacity];
         }
 
         public T this[int index]
         {
             get
             {
-                throw new NotImplementedException();
+                this.ValidateIndex(this.Count - 1 - index);
+                return this.items[this.Count - 1 - index];
             }
             set
             {
-                throw new NotImplementedException();
+                this.ValidateIndex(index);
+                this.items[index] = value;
             }
         }
 
-        public int Count { get; private set; }
-
         public void Add(T item)
         {
-            throw new NotImplementedException();
+            this.ResizeIfNecessary();
+            this.items[this.Count++] = item;
         }
 
         public bool Contains(T item)
         {
-            throw new NotImplementedException();
+            return this.IndexOf(item) >= 0;
         }
 
         public int IndexOf(T item)
         {
-            throw new NotImplementedException();
+            for (var i = 0; i < this.Count; i++)
+            {
+                if ((item == null && this.items[i] == null) || this.items[this.Count - 1 - i].Equals(item))
+                {
+                    return i;
+                }
+            }
+
+            return -1;
         }
 
         public void Insert(int index, T item)
         {
-            throw new NotImplementedException();
+            this.ValidateIndex(index);
+            this.ResizeIfNecessary();
+
+            for (var i = this.Count; i > this.Count - index; i--)
+            {
+                this.items[i] = this.items[i - 1];
+            }
+            this.items[this.Count - index] = item;
+            this.Count++;
         }
 
         public bool Remove(T item)
         {
-            throw new NotImplementedException();
+            var index = this.IndexOf(item);
+            if (index < 0)
+            {
+                return false;
+            }
+
+            this.RemoveAt(index);
+            return true;
         }
 
         public void RemoveAt(int index)
         {
-            throw new NotImplementedException();
+            this.ValidateIndex(index);
+
+            for (var i = this.Count - 1 - index; i < this.Count - 1; i++)
+            {
+                this.items[i] = this.items[i + 1];
+            }
+            this.Count--;
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            throw new NotImplementedException();
+            for (var i = this.Count - 1; i >= 0; i--)
+            {
+                yield return this.items[i];
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return GetEnumerator();
+        }
+
+        private void ResizeIfNecessary()
+        {
+            if (this.Count == this.Capacity)
+            {
+                this.Resize();
+            }
+        }
+
+        private void Resize()
+        {
+            var newCapacity = this.Capacity * 2;
+            var newArray = new T[newCapacity];
+            for (var i = 0; i < this.Count; i++)
+            {
+                newArray[i] = this.items[i];
+            }
+
+            this.items = newArray;
+            this.Capacity = newCapacity;
+        }
+
+        private void ValidateIndex(int index)
+        {
+            if (index < 0 || index >= this.Count)
+            {
+                throw new IndexOutOfRangeException();
+            }
         }
     }
 }

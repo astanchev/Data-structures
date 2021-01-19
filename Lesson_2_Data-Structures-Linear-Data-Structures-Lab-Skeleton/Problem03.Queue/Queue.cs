@@ -105,7 +105,7 @@
         {
             if (this.Count == 0)
             {
-                throw new InvalidOperationException("Stack is empty!");
+                throw new InvalidOperationException("Queue is empty!");
             }
         }
     }

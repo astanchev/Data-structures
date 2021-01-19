@@ -17,7 +17,7 @@
 
             while (current != null)
             {
-                if (current.Item.Equals(item))
+                if (current.Element.Equals(item))
                 {
                     return true;
                 }
@@ -32,7 +32,7 @@
         {
             this.EnsureNotEmpty();
 
-            var headItem = this._head.Item;
+            var headItem = this._head.Element;
             var newHead = this._head.Next;
             this._head.Next = null;
             this._head = newHead;
@@ -46,7 +46,7 @@
         {
             var newNode = new Node<T>
             {
-                Item = item,
+                Element = item,
                 Next = null
             };
 
@@ -71,7 +71,7 @@
         {
             this.EnsureNotEmpty();
 
-            return this._head.Item;
+            return this._head.Element;
         }
 
         public IEnumerator<T> GetEnumerator()
@@ -79,7 +79,7 @@
             var current = this._head;
             while (current != null)
             {
-                yield return current.Item;
+                yield return current.Element;
                 current = current.Next;
             }
         }
