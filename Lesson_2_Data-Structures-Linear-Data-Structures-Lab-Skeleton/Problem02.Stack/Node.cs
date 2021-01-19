@@ -2,6 +2,14 @@
 {
     public class Node<T>
     {
-        // TODO: Implement
+        public T Element { get; set; }
+        public Node<T> Previous { get; set; }
+
+        public Node(){}
+
+        public Node(T initialValue)
+        {
+            this.Element = initialValue;
+        }
     }
 }
