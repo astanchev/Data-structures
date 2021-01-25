@@ -1,4 +1,4 @@
-﻿namespace _03.MinHeap
+﻿namespace _04.CookiesProblem
 {
     using System;
     using System.Collections.Generic;
