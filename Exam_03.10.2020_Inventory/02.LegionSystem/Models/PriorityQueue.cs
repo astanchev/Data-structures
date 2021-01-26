@@ -1,11 +1,11 @@
 ﻿namespace _02.Data.Models
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
-
-    public class PriorityQueue<TPriority, TValue>
+   
+    public class PriorityQueue<TPriority, TValue> : IEnumerable
     {
         private List<KeyValuePair<TPriority, TValue>> _baseHeap;
         private IComparer<TPriority> _comparer;
@@ -69,7 +69,10 @@
 
         private int HeapifyFromEndToBeginning(int pos)
         {
-            if (pos >= _baseHeap.Count) return -1;
+            if (pos >= _baseHeap.Count)
+            {
+                return -1;
+            }
 
             // heap[i] have children heap[2*i + 1] and heap[2*i + 2] and parent heap[(i-1)/ 2];
 
@@ -81,7 +84,10 @@
                     ExchangeElements(parentPos, pos);
                     pos = parentPos;
                 }
-                else break;
+                else
+                {
+                    break;
+                }
             }
             return pos;
         }
@@ -137,6 +143,19 @@
             {
                 throw new InvalidOperationException("Priority queue is empty");
             }
+        }
+
+        public IEnumerator<TValue> GetEnumerator()
+        {
+            for (var i = 0; i < this.Count; i++)
+            {
+                yield return this._baseHeap[i].Value;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
         }
 
         private void DeleteRoot()
@@ -205,7 +224,7 @@
         {
             return Peek().Value;
         }
-        
+
         public bool IsEmpty
         {
             get { return _baseHeap.Count == 0; }
