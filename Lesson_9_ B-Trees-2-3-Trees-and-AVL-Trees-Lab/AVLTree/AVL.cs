@@ -30,6 +30,7 @@
             }
 
             int cmp = item.CompareTo(node.Value);
+
             if (cmp < 0)
             {
                 node.Left = this.Insert(node.Left, item);
@@ -38,6 +39,9 @@
             {
                 node.Right = this.Insert(node.Right, item);
             }
+
+            node = Balance(node);
+            UpdateHeight(node);
 
             return node;
         }
@@ -50,6 +54,7 @@
             }
 
             int cmp = item.CompareTo(node.Value);
+
             if (cmp < 0)
             {
                 return Search(node.Left, item);
@@ -72,6 +77,82 @@
             this.EachInOrder(node.Left, action);
             action(node.Value);
             this.EachInOrder(node.Right, action);
+        }
+
+        private static int Height(Node<T> node)
+        {
+            if (node == null)
+            {
+                return 0;
+            }
+
+            return node.Height;
+        }
+
+        private static void UpdateHeight(Node<T> node)
+        {
+            node.Height = Math.Max(Height(node.Left), Height(node.Right)) + 1;
+        }
+
+        private static Node<T> RotateLeft(Node<T> node)
+        {
+            var right = node.Right;
+            node.Right = node.Right.Left;
+            right.Left = node;
+
+            UpdateHeight(node);
+
+            return right;
+        }
+
+        private static Node<T> RotateRight(Node<T> node)
+        {
+            var left = node.Left;
+            node.Left = node.Left.Right;
+            left.Right = node;
+
+            UpdateHeight(node);
+
+            return left;
+        }
+
+        private static Node<T> Balance(Node<T> node)
+        {
+            int balance = Height(node.Left) - Height(node.Right);
+
+            if (balance < -1) // right child is heavy
+            {
+                // Rotate node left
+                balance = Height(node.Right.Left) - Height(node.Right.Right);
+
+                if (balance <= 0) // single left
+                {
+                    return RotateLeft(node);
+                }
+                else // double left
+                {
+                    node.Right = RotateRight(node.Right);
+                    return RotateLeft(node);
+                }
+            }
+
+            else if (balance > 1) // left child is heavy
+            {
+                // Rotate node right
+                balance = Height(node.Left.Right) - Height(node.Left.Left);
+
+                if (balance <= 0) // single right
+                {
+                    return RotateRight(node);
+                }
+                else // double right
+                {
+                    node.Left = RotateLeft(node.Left);
+                    return RotateRight(node);
+                }
+            }
+
+            return node;
         }
     }
 }
