@@ -81,9 +81,8 @@
                     return Merge(node, returnNode);
                 }
             }
-
             else if (node.IsTwoNode() 
-                || key.CompareTo(node.RightKey) < 0)
+                     || key.CompareTo(node.RightKey) < 0)
             {
                 returnNode = Insert(node.MiddleChild, key);
 
@@ -96,7 +95,6 @@
                     return Merge(node, returnNode);
                 }
             }
-
             else
             {
                 returnNode = Insert(node.RightChild, key);

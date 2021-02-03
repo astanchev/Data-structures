@@ -48,6 +48,7 @@ namespace _03.AVL
             }
 
             int cmp = item.CompareTo(node.Value);
+
             if (cmp < 0)
             {
                 node.Left = this.Insert(node.Left, item);
@@ -59,15 +60,18 @@ namespace _03.AVL
 
             node = Balance(node);
             UpdateHeight(node);
+
             return node;
         }
 
         private Node<T> Balance(Node<T> node)
         {
             var balance = Height(node.Left) - Height(node.Right);
+
             if (balance > 1)
             {
                 var childBalance = Height(node.Left.Left) - Height(node.Left.Right);
+
                 if (childBalance < 0)
                 {
                     node.Left = RotateLeft(node.Left);
@@ -78,6 +82,7 @@ namespace _03.AVL
             else if (balance < -1)
             {
                 var childBalance = Height(node.Right.Left) - Height(node.Right.Right);
+
                 if (childBalance > 0)
                 {
                     node.Right = RotateRight(node.Right);
@@ -105,6 +110,7 @@ namespace _03.AVL
             }
 
             int cmp = item.CompareTo(node.Value);
+
             if (cmp < 0)
             {
                 return Search(node.Left, item);
@@ -172,7 +178,6 @@ namespace _03.AVL
             {
                 return Smallest(node.Left);
             }
-
             else
             {
                 return node;
@@ -190,7 +195,6 @@ namespace _03.AVL
             {
                 return Greatest(node.Right);
             }
-
             else
             {
                 return node;
@@ -205,6 +209,7 @@ namespace _03.AVL
             }
 
             int cmp = item.CompareTo(node.Value);
+
             if (cmp < 0)
             {
                 node.Left = this.Remove(node.Left, item);
@@ -235,16 +240,20 @@ namespace _03.AVL
                 if (node.Left.Height > node.Right.Height)
                 {
                     var replacement = Greatest(node.Left);
+
                     node.Value = replacement.Value;
                     node.Left = Remove(node.Left, replacement.Value);
+
                     UpdateHeight(node.Left);
                     UpdateHeight(node);
                 }
                 else
                 {
                     var replacement = Smallest(node.Right);
+
                     node.Value = replacement.Value;
                     node.Right = Remove(node.Right, replacement.Value);
+
                     UpdateHeight(node.Right);
                     UpdateHeight(node);
                 }
@@ -252,6 +261,7 @@ namespace _03.AVL
 
             node = Balance(node);
             UpdateHeight(node);
+
             return node;
         }
     }
