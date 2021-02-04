@@ -6,6 +6,8 @@
     public class RedBlackTree<T>
         : IBinarySearchTree<T> where T : IComparable
     {
+        private const bool Red = true;
+        private const bool Black = false;
         private Node root;
 
         private RedBlackTree(Node node)
@@ -20,6 +22,7 @@
         public void Insert(T element)
         {
             this.root = this.Insert(element, this.root);
+            this.root.Color = Black;
         }
 
         public bool Contains(T element)
@@ -54,6 +57,7 @@
         public T Select(int rank)
         {
             Node node = this.Select(rank, this.root);
+
             if (node == null)
             {
                 throw new InvalidOperationException();
@@ -77,6 +81,7 @@
             {
                 throw new InvalidOperationException();
             }
+
             this.root = this.Delete(element, this.root);
         }
 
@@ -175,6 +180,19 @@
                 node.Right = this.Insert(element, node.Right);
             }
 
+            if (this.IsRed(node.Right) && !this.IsRed(node.Left))
+            {
+                node = this.RotateLeft(node);
+            }
+            if (this.IsRed(node.Left) && this.IsRed(node.Left.Left))
+            {
+                node = this.RotateRight(node);
+            }
+            if (this.IsRed(node.Left) && this.IsRed(node.Right))
+            {
+                this.FlipColors(node);
+            }
+
             node.Count = 1 + this.Count(node.Left) + this.Count(node.Right);
             return node;
         }
@@ -193,10 +211,12 @@
             {
                 this.Range(node.Left, queue, startRange, endRange);
             }
+
             if (nodeInLowerRange <= 0 && nodeInHigherRange >= 0)
             {
                 queue.Enqueue(node.Value);
             }
+
             if (nodeInHigherRange > 0)
             {
                 this.Range(node.Right, queue, startRange, endRange);
@@ -248,6 +268,7 @@
                 {
                     return node.Left;
                 }
+
                 if (node.Left == null)
                 {
                     return node.Right;
@@ -257,8 +278,8 @@
                 node = this.FindMin(temp.Right);
                 node.Right = this.DeleteMin(temp.Right);
                 node.Left = temp.Left;
-
             }
+
             node.Count = this.Count(node.Left) + this.Count(node.Right) + 1;
 
             return node;
@@ -318,6 +339,7 @@
             }
 
             int leftCount = this.Count(node.Left);
+
             if (leftCount == rank)
             {
                 return node;
@@ -331,11 +353,62 @@
             return this.Select(rank - (leftCount + 1), node.Right);
         }
 
+        private bool IsRed(Node node)
+        {
+            if (node == null)
+            {
+                return false;
+            }
+
+            return node.Color == Red;
+        }
+
+        private Node RotateLeft(Node node)
+        {
+            Node temp = node.Right;
+
+            node.Right = temp.Left;
+            temp.Left = node;
+            temp.Color = node.Color;
+            node.Color = Red;
+            node.Count = 1 + Count(node.Left) + Count(node.Right);
+
+            return temp;
+        }
+
+        private Node RotateRight(Node node)
+        {
+            Node temp = node.Left;
+
+            node.Left = temp.Right;
+            temp.Right = node;
+            temp.Color = node.Color;
+            node.Color = Red;
+            node.Count = 1 + Count(node.Left) + Count(node.Right);
+
+            return temp;
+        }
+
+        private void FlipColors(Node node)
+        {
+            node.Color = Red;
+            node.Left.Color = Black;
+            node.Right.Color = Black;
+        }
+
+
         private class Node
         {
+            public Node(T value, bool color)
+            {
+                this.Value = value;
+                this.Color = color;
+            }
+
             public Node(T value)
             {
                 this.Value = value;
+                this.Color = Red;
             }
 
             public T Value { get; }
@@ -343,6 +416,8 @@
             public Node Right { get; set; }
 
             public int Count { get; set; }
+
+            public bool Color { get; set; }
         }
 
     }
