@@ -6,24 +6,24 @@
 
     public class HashTable<TKey, TValue> : IEnumerable<KeyValue<TKey, TValue>>
     {
+        private LinkedList<KeyValue<TKey, TValue>>[] slots;
+
+        public const int InitialCapacity = 16;
+        
         public int Count { get; private set; }
 
-        public int Capacity
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public int Capacity => this.slots.Length;
 
         public HashTable()
         {
-            throw new NotImplementedException();
+            this.slots = new LinkedList<KeyValue<TKey, TValue>>[InitialCapacity];
+            this.Count = 0;
         }
 
-        public HashTable(int capacity)
+        public HashTable(int capacity = InitialCapacity)
         {
-            throw new NotImplementedException();
+            this.slots = new LinkedList<KeyValue<TKey, TValue>>[capacity];
+            this.Count = 0;
         }
 
         public void Add(TKey key, TValue value)
