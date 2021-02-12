@@ -54,7 +54,30 @@
 
         public bool AddOrReplace(TKey key, TValue value)
         {
-            throw new NotImplementedException();
+            GrowIfNeeded();
+
+            int slotNumber = this.FindSlotNumber(key);
+
+            if (this.slots[slotNumber] == null)
+            {
+                this.slots[slotNumber] = new LinkedList<KeyValue<TKey, TValue>>();
+            }
+
+            foreach (var element in this.slots[slotNumber])
+            {
+                if (element.Key.Equals(key))
+                {
+                    element.Value = value;
+                    return false;
+                }
+            }
+
+            var newElement = new KeyValue<TKey, TValue>(key, value);
+
+            this.slots[slotNumber].AddLast(newElement);
+            this.Count++;
+
+            return true;
         }
 
         public TValue Get(TKey key)
