@@ -82,26 +82,35 @@
 
         public TValue Get(TKey key)
         {
-            throw new NotImplementedException();
-            // Note: throw an exception on missing key
+            var element = this.Find(key);
+
+            if (element == null)
+            {
+                throw new KeyNotFoundException();
+            }
+
+            return element.Value;
         }
 
         public TValue this[TKey key]
         {
-            get
-            {
-                throw new NotImplementedException();
-                // Note: throw an exception on missing key
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get => this.Get(key);
+            set => this.AddOrReplace(key, value);
         }
 
         public bool TryGetValue(TKey key, out TValue value)
         {
-            throw new NotImplementedException();
+            var element = this.Find(key);
+
+            if (element != null)
+            {
+                value = element.Value;
+                return true;
+            }
+
+            value = default(TValue);
+
+            return false;
         }
 
         public KeyValue<TKey, TValue> Find(TKey key)
