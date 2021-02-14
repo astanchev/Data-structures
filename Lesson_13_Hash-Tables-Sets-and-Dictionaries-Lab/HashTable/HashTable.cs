@@ -115,7 +115,21 @@
 
         public KeyValue<TKey, TValue> Find(TKey key)
         {
-            throw new NotImplementedException();
+            int slotNumber = this.FindSlotNumber(key);
+            var elements = this.slots[slotNumber];
+
+            if (elements != null)
+            {
+                foreach (var element in elements)
+                {
+                    if (element.Key.Equals(key))
+                    {
+                        return element;
+                    }
+                }
+            }
+
+            return null;
         }
 
         public bool ContainsKey(TKey key)
