@@ -3,6 +3,7 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
 
     public class HashTable<TKey, TValue> : IEnumerable<KeyValue<TKey, TValue>>
     {
@@ -134,7 +135,9 @@
 
         public bool ContainsKey(TKey key)
         {
-            throw new NotImplementedException();
+            var element = this.Find(key);
+
+            return element != null;
         }
 
         public bool Remove(TKey key)
@@ -151,7 +154,7 @@
         {
             get
             {
-                throw new NotImplementedException();
+                return this.Select(element => element.Key);
             }
         }
 
@@ -159,7 +162,16 @@
         {
             get
             {
-                throw new NotImplementedException();
+                foreach (var elements in this.slots)
+                {
+                    if (elements != null)
+                    {
+                        foreach (var element in elements)
+                        {
+                            yield return element.Value;
+                        }
+                    }
+                }
             }
         }
 
