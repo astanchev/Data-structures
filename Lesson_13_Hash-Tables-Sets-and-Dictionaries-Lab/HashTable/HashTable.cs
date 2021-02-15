@@ -142,7 +142,26 @@
 
         public bool Remove(TKey key)
         {
-            throw new NotImplementedException();
+            int slotNumber = this.FindSlotNumber(key);
+            var elements = this.slots[slotNumber];
+
+            if (elements != null)
+            {
+                var currentElement = elements.First;
+
+                while (currentElement != null)
+                {
+                    if (currentElement.Value.Key.Equals(key))
+                    {
+                        elements.Remove(currentElement);
+                        this.Count--;
+                        return true;
+                    }
+                    currentElement = currentElement.Next;
+                }
+            }
+
+            return false;
         }
 
         public void Clear()
