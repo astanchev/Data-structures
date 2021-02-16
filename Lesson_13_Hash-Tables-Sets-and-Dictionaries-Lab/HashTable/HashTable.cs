@@ -197,12 +197,21 @@
 
         public IEnumerator<KeyValue<TKey, TValue>> GetEnumerator()
         {
-            throw new NotImplementedException();
+            foreach (var elements in this.slots)
+            {
+                if (elements != null)
+                {
+                    foreach (var element in elements)
+                    {
+                        yield return element;
+                    }
+                }
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return this.GetEnumerator();
         }
 
         private void GrowIfNeeded()
