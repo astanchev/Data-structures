@@ -11,7 +11,7 @@
 
         public WordCruncher(string[] input, string target)
         {
-            permutation = GeneratePermutations(input.OrderBy(s => s).ToList(), target);
+            this.permutation = GeneratePermutations(input.OrderBy(s => s).ToList(), target);
 
             foreach (var path in this.GetAllPaths())
             {
@@ -36,7 +36,7 @@
         {
             List<string> way = new List<string>();
 
-            foreach (var key in VisitPath(permutation, new List<string>()))
+            foreach (var key in VisitPath(this.permutation, new List<string>()))
             {
                 if (key == null)
                 {

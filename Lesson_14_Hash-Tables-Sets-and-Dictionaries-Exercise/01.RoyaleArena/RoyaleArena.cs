@@ -6,6 +6,7 @@ namespace _01.RoyaleArena
 
     public class RoyaleArena : IArena
     {
+        private Dictionary<int, BattleCard> cardsById = new Dictionary<int, BattleCard>();
 
         public void Add(BattleCard card)
         {
@@ -72,12 +73,12 @@ namespace _01.RoyaleArena
 
         public IEnumerator<BattleCard> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return this.cardsById.Values.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return GetEnumerator();
         }
     }
 }

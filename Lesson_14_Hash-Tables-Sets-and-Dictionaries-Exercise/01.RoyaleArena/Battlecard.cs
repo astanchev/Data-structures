@@ -35,9 +35,18 @@ namespace _01.RoyaleArena
         }
 
         public override bool Equals(Object o) {
-            if (this == o) return true;
-            if (o == null || this.GetType().Name.CompareTo(o.GetType().Name) != 0) return false;
+            if (this == o)
+            {
+                return true;
+            }
+
+            if (o == null || this.GetType().Name.CompareTo(o.GetType().Name) != 0)
+            {
+                return false;
+            }
+
             BattleCard bc = (BattleCard) o;
+            
             return this.Id == bc.Id &&
                    bc.Damage.Equals(this.Damage) &&
                    bc.Swag.Equals(this.Swag) &&
