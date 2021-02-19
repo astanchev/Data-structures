@@ -10,15 +10,20 @@ namespace _01.RoyaleArena
 
         public void Add(BattleCard card)
         {
-            throw new NotImplementedException();
+            if (this.Contains(card))
+            {
+                return;
+            }
+
+            this.cardsById.Add(card.Id, card);
         }
 
         public bool Contains(BattleCard card)
         {
-            throw new NotImplementedException();
+            return this.cardsById.ContainsKey(card.Id);
         }
 
-        public int Count { get; }
+        public int Count => this.cardsById.Count;
 
         public void ChangeCardType(int id, CardType type)
         {
