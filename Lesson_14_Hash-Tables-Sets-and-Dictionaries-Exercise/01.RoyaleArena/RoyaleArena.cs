@@ -27,17 +27,32 @@ namespace _01.RoyaleArena
 
         public void ChangeCardType(int id, CardType type)
         {
-            throw new NotImplementedException();
+            if (!this.cardsById.ContainsKey(id))
+            {
+                throw new InvalidOperationException();
+            }
+
+            this.cardsById[id].Type = type;
         }
 
         public BattleCard GetById(int id)
         {
-            throw new NotImplementedException();
+            if (!this.cardsById.ContainsKey(id))
+            {
+                throw new InvalidOperationException();
+            }
+
+            return this.cardsById[id];
         }
 
         public void RemoveById(int id)
         {
-            throw new NotImplementedException();
+            if (!this.cardsById.ContainsKey(id))
+            {
+                throw new InvalidOperationException();
+            }
+
+            this.cardsById.Remove(id);
         }
 
         public IEnumerable<BattleCard> GetByCardType(CardType type)
