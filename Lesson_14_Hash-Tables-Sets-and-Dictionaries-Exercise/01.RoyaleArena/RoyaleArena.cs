@@ -3,6 +3,7 @@ namespace _01.RoyaleArena
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
 
     public class RoyaleArena : IArena
     {
@@ -82,7 +83,16 @@ namespace _01.RoyaleArena
 
         public IEnumerable<BattleCard> FindFirstLeastSwag(int n)
         {
-            throw new NotImplementedException();
+            if (n > this.Count)
+            {
+                throw new InvalidOperationException();
+            }
+
+            return this.cardsById.Values
+                .OrderBy(x => x.Swag)
+                .Take(n)
+                .OrderBy(x => x.Id)
+                .ToList();
         }
 
         public IEnumerable<BattleCard> GetAllInSwagRange(double lo, double hi)
