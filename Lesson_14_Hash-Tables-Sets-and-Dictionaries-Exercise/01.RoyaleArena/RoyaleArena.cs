@@ -92,7 +92,19 @@ namespace _01.RoyaleArena
 
         public IEnumerable<BattleCard> GetByCardTypeAndMaximumDamage(CardType type, double damage)
         {
-            throw new NotImplementedException();
+            var found = this.cardsById.Values
+                .Where(x => x.Type == type
+                            && x.Damage <= damage)
+                .OrderByDescending(x => x.Damage)
+                .ThenBy(x => x.Id)
+                .ToList();
+
+            if (found.Count == 0)
+            {
+                throw new InvalidOperationException();
+            }
+
+            return found;
         }
 
         public IEnumerable<BattleCard> GetByNameOrderedBySwagDescending(string name)
