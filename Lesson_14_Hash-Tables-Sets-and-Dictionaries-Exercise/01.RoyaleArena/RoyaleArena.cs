@@ -108,7 +108,18 @@ namespace _01.RoyaleArena
 
         public IEnumerable<BattleCard> GetAllInSwagRange(double lo, double hi)
         {
-            throw new NotImplementedException();
+            var found = this.cardsById.Values
+                .Where(x => x.Swag >= lo
+                            && x.Swag <= hi)
+                .OrderBy(x => x.Swag)
+                .ToList();
+
+            if (found.Count == 0)
+            {
+                return Enumerable.Empty<BattleCard>();
+            }
+
+            return found;
         }
 
 
