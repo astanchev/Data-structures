@@ -74,7 +74,20 @@ namespace _01.RoyaleArena
 
         public IEnumerable<BattleCard> GetByTypeAndDamageRangeOrderedByDamageThenById(CardType type, int lo, int hi)
         {
-            throw new NotImplementedException();
+            var found = this.cardsById.Values
+                .Where(x => x.Type == type
+                            && x.Damage > lo
+                            && x.Damage < hi)
+                .OrderByDescending(x => x.Damage)
+                .ThenBy(x => x.Id)
+                .ToList();
+
+            if (found.Count == 0)
+            {
+                throw new InvalidOperationException();
+            }
+
+            return found;
         }
 
         public IEnumerable<BattleCard> GetByCardTypeAndMaximumDamage(CardType type, double damage)
