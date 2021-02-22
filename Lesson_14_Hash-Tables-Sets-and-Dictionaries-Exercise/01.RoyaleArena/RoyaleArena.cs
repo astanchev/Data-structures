@@ -109,7 +109,18 @@ namespace _01.RoyaleArena
 
         public IEnumerable<BattleCard> GetByNameOrderedBySwagDescending(string name)
         {
-            throw new NotImplementedException();
+            var found = this.cardsById.Values
+                .Where(x => x.Name == name)
+                .OrderByDescending(x => x.Swag)
+                .ThenBy(x => x.Id)
+                .ToList();
+
+            if (found.Count == 0)
+            {
+                throw new InvalidOperationException();
+            }
+
+            return found;
         }
 
         public IEnumerable<BattleCard> GetByNameAndSwagRange(string name, double lo, double hi)
