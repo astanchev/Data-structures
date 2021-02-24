@@ -22,5 +22,21 @@
         public double ScreenSize { get; set; }
 
         public string Color { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as Computer;
+            if (other == null)
+            {
+                return false;
+            }
+
+            return this.Number == other.Number;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Number;
+        }
     }
 }
