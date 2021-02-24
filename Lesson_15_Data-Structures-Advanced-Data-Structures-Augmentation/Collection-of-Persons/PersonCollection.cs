@@ -29,7 +29,12 @@
                 Town = town,
             };
 
+            // Add by email
             this.personByEmail.Add(email, person);
+
+            // Add by email domain
+            var emailDomain = this.ExtractEmailDomain(email);
+            this.personByEmailDomain.AppendValueToKey(emailDomain, person);
 
             return true;
         }
@@ -54,13 +59,19 @@
                 return false;
             }
 
+            // Delete person from personByEmail
             var personDeleted = this.personByEmail.Remove(email);
+
+            //  Delete person from personByEmailDomain
+            var emailDomain = this.ExtractEmailDomain(email);
+            this.personByEmailDomain[emailDomain].Remove(person);
+
             return true;
         }
 
         public IEnumerable<Person> FindPersons(string emailDomain)
         {
-            throw new NotImplementedException();
+            return this.personByEmailDomain.GetValuesForKey(emailDomain);
         }
 
         public IEnumerable<Person> FindPersons(string name, string town)
@@ -76,6 +87,13 @@
         public IEnumerable<Person> FindPersons(int startAge, int endAge, string town)
         {
             throw new NotImplementedException();
+        }
+
+        private string ExtractEmailDomain(string email)
+        {
+            var domain = email.Split('@')[1];
+
+            return domain;
         }
     }
 }
