@@ -2,25 +2,39 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     public class PersonCollectionSlow : IPersonCollection
     {
-        // TODO: define the underlying data structures here ...
+        private List<Person> persons = new List<Person>();
 
         public bool AddPerson(string email, string name, int age, string town)
         {
-            throw new NotImplementedException();
+            var person = new Person()
+            {                
+                Age = age,
+                Name = name,
+                Email = email,
+                Town = town,
+            };
+
+            this.persons.Add(person);
+
+            return true;
         }
 
-        public int Count { get; }
+        public int Count => this.persons.Count;
+
         public Person FindPerson(string email)
         {
-            throw new NotImplementedException();
+            return this.persons.FirstOrDefault(p => p.Email == email);
         }
 
         public bool DeletePerson(string email)
         {
-            throw new NotImplementedException();
+            var person = this.FindPerson(email);
+
+            return this.persons.Remove(person);
         }
 
         public IEnumerable<Person> FindPersons(string emailDomain)
