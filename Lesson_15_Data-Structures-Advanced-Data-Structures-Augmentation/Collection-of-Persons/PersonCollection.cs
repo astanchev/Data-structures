@@ -43,6 +43,10 @@
             // Add by age
             this.personByAge.AppendValueToKey(age, person);
 
+            // Add by {town + age}
+            this.personByTownAndAge.EnsureKeyExists(town);
+            this.personByTownAndAge[town].AppendValueToKey(age, person);
+
             return true;
         }
 
@@ -80,6 +84,9 @@
             //  Delete person from personByAge
             this.personByAge[person.Age].Remove(person);
 
+            //  Delete person from personByAge
+            this.personByTownAndAge[person.Town][person.Age].Remove(person);
+
             return true;
         }
 
@@ -110,7 +117,21 @@
 
         public IEnumerable<Person> FindPersons(int startAge, int endAge, string town)
         {
-            throw new NotImplementedException();
+            if (!this.personByTownAndAge.ContainsKey(town))
+            {
+                // Return an emty sequence of persons
+                yield break;
+            }
+
+            var personsInRange = this.personByTownAndAge[town].Range(startAge, true, endAge, true);
+
+            foreach (var personsByAge in personsInRange)
+            {
+                foreach (var person in personsByAge.Value)
+                {
+                    yield return person;
+                }
+            }
         }
 
         private string ExtractEmailDomain(string email)
