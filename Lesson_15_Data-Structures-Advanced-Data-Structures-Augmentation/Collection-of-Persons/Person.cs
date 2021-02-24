@@ -1,6 +1,8 @@
 ﻿namespace Collection_of_Persons
 {
-    public class Person
+    using System;
+
+    public class Person : IComparable<Person>
     {
         public string Email { get; set; }
         public string Name { get; set; }
