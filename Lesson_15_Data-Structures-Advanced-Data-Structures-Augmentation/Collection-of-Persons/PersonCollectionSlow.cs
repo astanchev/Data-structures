@@ -10,8 +10,14 @@
 
         public bool AddPerson(string email, string name, int age, string town)
         {
+            if (this.FindPerson(email) != null)
+            {
+                //Person already exists
+                return false;
+            }
+
             var person = new Person()
-            {                
+            {
                 Age = age,
                 Name = name,
                 Email = email,
@@ -39,22 +45,33 @@
 
         public IEnumerable<Person> FindPersons(string emailDomain)
         {
-            throw new NotImplementedException();
+            return this.persons
+                .Where(p => p.Email.EndsWith("@" + emailDomain))
+                .OrderBy(p => p.Email);
         }
 
         public IEnumerable<Person> FindPersons(string name, string town)
         {
-            throw new NotImplementedException();
+            return this.persons
+                .Where(p => p.Name == name && p.Town == town)
+                .OrderBy(p => p.Email);
         }
 
         public IEnumerable<Person> FindPersons(int startAge, int endAge)
         {
-            throw new NotImplementedException();
+            return this.persons
+                .Where(p => p.Age >= startAge && p.Age <= endAge)
+                .OrderBy(p => p.Age)
+                .ThenBy(p => p.Email);
         }
 
         public IEnumerable<Person> FindPersons(int startAge, int endAge, string town)
         {
-            throw new NotImplementedException();
+            return this.persons
+                .Where(p => p.Town == town)
+                .Where(p => p.Age >= startAge && p.Age <= endAge)
+                .OrderBy(p => p.Age)
+                .ThenBy(p => p.Email);
         }
     }
 }
