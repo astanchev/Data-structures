@@ -10,8 +10,8 @@
         private Dictionary<string, Person> personByEmail = new Dictionary<string, Person>();
         private Dictionary<string, SortedSet<Person>> personByEmailDomain = new Dictionary<string, SortedSet<Person>>();
         private Dictionary<string, SortedSet<Person>> personByNameAndTown = new Dictionary<string, SortedSet<Person>>();
-        private OrderedDictionary<string, SortedSet<Person>> personByAge = new OrderedDictionary<string, SortedSet<Person>>();
-        private Dictionary<string, SortedSet<Person>> personByTownAndAge = new Dictionary<string, SortedSet<Person>>();
+        private OrderedDictionary<int, SortedSet<Person>> personByAge = new OrderedDictionary<int, SortedSet<Person>>();
+        private Dictionary<string, OrderedDictionary<int, SortedSet<Person>>> personByTownAndAge = new Dictionary<string, OrderedDictionary<int, SortedSet<Person>>>();
 
         public bool AddPerson(string email, string name, int age, string town)
         {
@@ -39,6 +39,9 @@
             // Add by {name + town}
             var nameAndTown = this.CombineNameAndTown(name, town);
             this.personByNameAndTown.AppendValueToKey(nameAndTown, person);
+
+            // Add by age
+            this.personByAge.AppendValueToKey(age, person);
 
             return true;
         }
@@ -74,6 +77,9 @@
             var nameAndTown = this.CombineNameAndTown(person.Name, person.Town);
             this.personByNameAndTown[nameAndTown].Remove(person);
 
+            //  Delete person from personByAge
+            this.personByAge[person.Age].Remove(person);
+
             return true;
         }
 
@@ -91,7 +97,15 @@
 
         public IEnumerable<Person> FindPersons(int startAge, int endAge)
         {
-            throw new NotImplementedException();
+            var personsInRange = this.personByAge.Range(startAge, true, endAge, true);
+
+            foreach (var personsByAge in personsInRange)
+            {
+                foreach (var person in personsByAge.Value)
+                {
+                    yield return person;
+                }
+            }
         }
 
         public IEnumerable<Person> FindPersons(int startAge, int endAge, string town)
