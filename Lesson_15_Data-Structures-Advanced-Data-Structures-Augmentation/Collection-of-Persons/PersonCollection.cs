@@ -35,6 +35,10 @@
             // Add by email domain
             var emailDomain = this.ExtractEmailDomain(email);
             this.personByEmailDomain.AppendValueToKey(emailDomain, person);
+            
+            // Add by {name + town}
+            var nameAndTown = this.CombineNameAndTown(name, town);
+            this.personByNameAndTown.AppendValueToKey(nameAndTown, person);
 
             return true;
         }
@@ -66,6 +70,10 @@
             var emailDomain = this.ExtractEmailDomain(email);
             this.personByEmailDomain[emailDomain].Remove(person);
 
+            //  Delete person from personByNameAndTown
+            var nameAndTown = this.CombineNameAndTown(person.Name, person.Town);
+            this.personByNameAndTown[nameAndTown].Remove(person);
+
             return true;
         }
 
@@ -76,7 +84,9 @@
 
         public IEnumerable<Person> FindPersons(string name, string town)
         {
-            throw new NotImplementedException();
+            var nameAndTown = this.CombineNameAndTown(name, town);
+
+            return this.personByNameAndTown.GetValuesForKey(nameAndTown);
         }
 
         public IEnumerable<Person> FindPersons(int startAge, int endAge)
@@ -94,6 +104,13 @@
             var domain = email.Split('@')[1];
 
             return domain;
+        }
+
+        private string CombineNameAndTown(string name, string town)
+        {
+            const string separator = "[!]";
+
+            return name + separator + town;
         }
     }
 }
