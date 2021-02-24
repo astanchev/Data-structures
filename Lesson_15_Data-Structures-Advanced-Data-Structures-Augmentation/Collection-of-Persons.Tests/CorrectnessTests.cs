@@ -6,12 +6,18 @@
 
     public class CorrectnessTests
     {
+        private IPersonCollection persons;
+
+        [SetUp]
+        public void SetUp()
+        {
+            //this.persons = new PersonCollection();
+            this.persons = new PersonCollectionSlow();
+        }
+
         [Test]
         public void AddPerson_ShouldWorkCorrectly()
         {
-            // Arrange
-            var persons = new PersonCollection();
-
             // Act
             var isAdded =
                 persons.AddPerson("pesho@gmail.com", "Peter", 18, "Sofia");
@@ -24,9 +30,6 @@
         [Test]
         public void AddPerson_DuplicatedEmail_ShouldWorkCorrectly()
         {
-            // Arrange
-            var persons = new PersonCollection();
-
             // Act
             var isAddedFirst =
                 persons.AddPerson("pesho@gmail.com", "Peter", 18, "Sofia");
@@ -42,9 +45,6 @@
         [Test]
         public void FindPerson_ExistingPerson_ShouldReturnPerson()
         {
-            // Arrange
-            var persons = new PersonCollection();
-
             persons.AddPerson("pesho@gmail.com", "Peter", 28, "Plovdiv");
 
             // Act
@@ -57,9 +57,6 @@
         [Test]
         public void FindPerson_NonExistingPerson_ShouldReturnNothing()
         {
-            // Arrange
-            var persons = new PersonCollection();
-
             // Act
             var person = persons.FindPerson("pesho@gmail.com");
 
@@ -71,7 +68,6 @@
         public void DeletePerson_ShouldWorkCorrectly()
         {
             // Arrange
-            var persons = new PersonCollection();
             persons.AddPerson("pesho@gmail.com", "Peter", 28, "Plovdiv");
 
             // Act
@@ -90,7 +86,6 @@
         public void FindPersonsByEmailDomain_ShouldReturnMatchingPersons()
         {
             // Arrange
-            var persons = new PersonCollection();
 
             persons.AddPerson("pesho@gmail.com", "Pesho", 28, "Plovdiv");
             persons.AddPerson("kiro@yahoo.co.uk", "Kiril", 22, "Sofia");
@@ -118,7 +113,7 @@
         public void FindPersonsByNameAndTown_ShouldReturnMatchingPersons()
         {
             // Arrange
-            var persons = new PersonCollection();
+
             persons.AddPerson("pesho@gmail.com", "Pesho", 28, "Plovdiv");
             persons.AddPerson("kiro@yahoo.co.uk", "Kiril", 22, "Sofia");
             persons.AddPerson("pepi@gmail.com", "Pesho", 21, "Plovdiv");
@@ -150,7 +145,7 @@
         public void FindPersonsByAgeRange_ShouldReturnMatchingPersons()
         {
             // Arrange
-            var persons = new PersonCollection();
+
             persons.AddPerson("pesho@gmail.com", "Pesho", 28, "Plovdiv");
             persons.AddPerson("kiro@yahoo.co.uk", "Kiril", 22, "Sofia");
             persons.AddPerson("pepi@gmail.com", "Pesho", 21, "Plovdiv");
@@ -187,7 +182,7 @@
         public void FindPersonsByAgeRangeAndTown_ShouldReturnMatchingPersons()
         {
             // Arrange
-            var persons = new PersonCollection();
+
             persons.AddPerson("pesho@gmail.com", "Pesho", 28, "Plovdiv");
             persons.AddPerson("kirosofia@yahoo.co.uk", "Kiril", 22, "Sofia");
             persons.AddPerson("kiro@yahoo.co.uk", "Kiril", 22, "Plovdiv");
@@ -231,7 +226,7 @@
         public void FindDeletedPersons_ShouldReturnEmptyCollection()
         {
             // Arrange
-            var persons = new PersonCollection();
+
             persons.AddPerson("pesho@gmail.com", "Pesho", 28, "Plovdiv");
             persons.AddPerson("kirosofia@yahoo.co.uk", "Kiril", 22, "Sofia");
             persons.AddPerson("kiro@yahoo.co.uk", "Kiril", 22, "Plovdiv");
@@ -284,7 +279,6 @@
         [Test]
         public void MultipleOperations_ShouldReturnWorkCorrectly()
         {
-            var persons = new PersonCollection();
 
             var isAdded = persons.AddPerson("pesho@gmail.com", "Pesho", 28, "Plovdiv");
             Assert.IsTrue(isAdded);

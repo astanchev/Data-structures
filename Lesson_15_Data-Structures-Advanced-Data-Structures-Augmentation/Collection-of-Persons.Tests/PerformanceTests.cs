@@ -6,18 +6,24 @@
 
     public class PerformanceTests
     {
+        private IPersonCollection persons;
+
+        [SetUp]
+        public void SetUp()
+        {
+            //this.persons = new PersonCollection();
+            this.persons = new PersonCollectionSlow();
+        }
 
         [Test]
         [Timeout(250)]
         public void TestPerformance_AddPerson()
         {
-            // Arrange
-            var persons = new PersonCollection();
-
             // Act
             AddPersons(5000, persons);
             Assert.AreEqual(5000, persons.Count);
-            void AddPersons(int count, PersonCollection persons)
+
+            void AddPersons(int count, IPersonCollection persons)
             {
                 for (int i = 0; i < count; i++)
                 {
@@ -35,8 +41,7 @@
         public void TestPerformance_FindPerson()
         {
             // Arrange
-            var persons = new PersonCollection();
-            AddPersons(5000, persons);
+           AddPersons(5000, persons);
 
             // Act
             for (int i = 0; i < 100000; i++)
@@ -46,7 +51,8 @@
                 var nonExistingPerson = persons.FindPerson("non-existing email");
                 Assert.IsNull(nonExistingPerson);
             }
-            void AddPersons(int count, PersonCollection persons)
+
+            void AddPersons(int count, IPersonCollection persons)
             {
                 for (int i = 0; i < count; i++)
                 {
@@ -64,7 +70,6 @@
         public void TestPerformance_FindPersonsByEmailDomain()
         {
             // Arrange
-            var persons = new PersonCollection();
             AddPersons(5000, persons);
 
             // Act
@@ -77,7 +82,8 @@
                     persons.FindPersons("non-existing email").ToList();
                 Assert.AreEqual(0, notExistingPersons.Count);
             }
-            void AddPersons(int count, PersonCollection persons)
+
+            void AddPersons(int count, IPersonCollection persons)
             {
                 for (int i = 0; i < count; i++)
                 {
@@ -95,7 +101,6 @@
         public void TestPerformance_FindPersonsByNameAndTown()
         {
             // Arrange
-            var persons = new PersonCollection();
             AddPersons(5000, persons);
 
             // Act
@@ -108,7 +113,7 @@
                     persons.FindPersons("Pesho1", "Sofia5").ToList();
                 Assert.AreEqual(0, notExistingPersons.Count);
             }
-            void AddPersons(int count, PersonCollection persons)
+            void AddPersons(int count, IPersonCollection persons)
             {
                 for (int i = 0; i < count; i++)
                 {
@@ -126,7 +131,6 @@
         public void TestPerformance_FindPersonsByAgeRange()
         {
             // Arrange
-            var persons = new PersonCollection();
             AddPersons(5000, persons);
 
             // Act
@@ -139,7 +143,8 @@
                     persons.FindPersons(500, 600).ToList();
                 Assert.AreEqual(0, notExistingPersons.Count);
             }
-            void AddPersons(int count, PersonCollection persons)
+
+            void AddPersons(int count, IPersonCollection persons)
             {
                 for (int i = 0; i < count; i++)
                 {
@@ -157,7 +162,6 @@
         public void TestPerformance_FindPersonsByTownAndAgeRange()
         {
             // Arrange
-            var persons = new PersonCollection();
             AddPersons(5000, persons);
 
             // Act
@@ -173,7 +177,8 @@
                     persons.FindPersons(200, 300, "Sofia1").ToList();
                 Assert.AreEqual(0, notExistingTownPersons.Count);
             }
-            void AddPersons(int count, PersonCollection persons)
+
+            void AddPersons(int count, IPersonCollection persons)
             {
                 for (int i = 0; i < count; i++)
                 {
