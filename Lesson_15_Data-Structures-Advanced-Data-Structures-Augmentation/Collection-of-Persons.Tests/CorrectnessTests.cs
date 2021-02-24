@@ -11,8 +11,8 @@
         [SetUp]
         public void SetUp()
         {
-            //this.persons = new PersonCollection();
-            this.persons = new PersonCollectionSlow();
+            this.persons = new PersonCollection();
+            //this.persons = new PersonCollectionSlow();
         }
 
         [Test]

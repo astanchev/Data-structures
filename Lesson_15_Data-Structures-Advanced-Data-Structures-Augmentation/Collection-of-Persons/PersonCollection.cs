@@ -3,24 +3,59 @@
     using System;
     using System.Collections.Generic;
 
+    using Wintellect.PowerCollections;
+
     public class PersonCollection : IPersonCollection
     {
-        // TODO: define the underlying data structures here ...
+        private Dictionary<string, Person> personByEmail = new Dictionary<string, Person>();
+        private Dictionary<string, SortedSet<Person>> personByEmailDomain = new Dictionary<string, SortedSet<Person>>();
+        private Dictionary<string, SortedSet<Person>> personByNameAndTown = new Dictionary<string, SortedSet<Person>>();
+        private OrderedDictionary<string, SortedSet<Person>> personByAge = new OrderedDictionary<string, SortedSet<Person>>();
+        private Dictionary<string, SortedSet<Person>> personByTownAndAge = new Dictionary<string, SortedSet<Person>>();
 
         public bool AddPerson(string email, string name, int age, string town)
         {
-            throw new NotImplementedException();
+            if (this.FindPerson(email) != null)
+            {
+                //Person already exists
+                return false;
+            }
+
+            var person = new Person()
+            {
+                Age = age,
+                Name = name,
+                Email = email,
+                Town = town,
+            };
+
+            this.personByEmail.Add(email, person);
+
+            return true;
         }
 
-        public int Count { get; }
+        public int Count => this.personByEmail.Count;
+
         public Person FindPerson(string email)
         {
-            throw new NotImplementedException();
+            Person person = null;
+            var personExists = this.personByEmail.TryGetValue(email, out person);
+
+            return person;
         }
 
         public bool DeletePerson(string email)
         {
-            throw new NotImplementedException();
+            var person = this.FindPerson(email);
+
+            if (person == null)
+            {
+                //Person already exists
+                return false;
+            }
+
+            var personDeleted = this.personByEmail.Remove(email);
+            return true;
         }
 
         public IEnumerable<Person> FindPersons(string emailDomain)
