@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace _02.FitGym
 {
     public class Trainer
@@ -14,5 +17,24 @@ namespace _02.FitGym
         public string Name { get; set; }
 
         public int Popularity { get; set; }
+
+        public HashSet<Member> Members = new HashSet<Member>();
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as Trainer;
+
+            if (other == null)
+            {
+                return false;
+            }
+
+            return this.Id == other.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Id;
+        }
     }
 }
