@@ -6,9 +6,9 @@ namespace _02.FitGym
 
     public class FitGym : IGym
     {
-        Dictionary<int, Member> membersById = new Dictionary<int, Member>();
+        private Dictionary<int, Member> membersById = new Dictionary<int, Member>();
 
-        Dictionary<int, Trainer> trainersById = new Dictionary<int, Trainer>();
+        private Dictionary<int, Trainer> trainersById = new Dictionary<int, Trainer>();
 
         private Dictionary<Trainer, HashSet<Member>> trainers = new Dictionary<Trainer, HashSet<Member>>();
 
