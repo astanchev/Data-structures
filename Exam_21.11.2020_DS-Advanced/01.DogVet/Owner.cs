@@ -11,5 +11,22 @@ namespace _01.DogVet
         public string Id { get; set; }
 
         public string Name { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as Owner;
+
+            if (other == null)
+            {
+                return false;
+            }
+
+            return this.Id == other.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Id.GetHashCode();
+        }
     }
 }
